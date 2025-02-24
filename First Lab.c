@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Definition for singly-linked list.
 struct ListNode {
     int val;
     struct ListNode *next;
 };
 
-// Function to remove elements from the linked list
 struct ListNode* removeElements(struct ListNode* head, int val) {
     struct ListNode* dummy = (struct ListNode*)malloc(sizeof(struct ListNode));
     dummy->next = head;
@@ -16,20 +14,19 @@ struct ListNode* removeElements(struct ListNode* head, int val) {
 
     while (curr) {
         if (curr->val == val) {
-            prev->next = curr->next; // Skip the node
-            free(curr); // Free removed node memory
+            prev->next = curr->next; 
+            free(curr); 
         } else {
             prev = curr;
         }
-        curr = prev->next; // Move forward
+        curr = prev->next; 
     }
     
     struct ListNode* newHead = dummy->next;
-    free(dummy); // Free dummy node
+    free(dummy); 
     return newHead;
 }
 
-// Function to create a new node
 struct ListNode* createNode(int val) {
     struct ListNode* newNode = (struct ListNode*)malloc(sizeof(struct ListNode));
     newNode->val = val;
@@ -37,7 +34,6 @@ struct ListNode* createNode(int val) {
     return newNode;
 }
 
-// Function to print the linked list
 void printList(struct ListNode* head) {
     struct ListNode* temp = head;
     while (temp) {
@@ -47,7 +43,6 @@ void printList(struct ListNode* head) {
     printf("NULL\n");
 }
 
-// Function to free the linked list memory
 void freeList(struct ListNode* head) {
     struct ListNode* temp;
     while (head) {
@@ -58,7 +53,6 @@ void freeList(struct ListNode* head) {
 }
 
 int main() {
-    // Example 1: head = [1,2,6,3,4,5,6], val = 6
     printf("Example 1:\n");
     struct ListNode* head1 = createNode(1);
     head1->next = createNode(2);
@@ -76,8 +70,7 @@ int main() {
     freeList(head1);
     
     printf("\n");
-
-    // Example 2: head = [], val = 1
+    
     printf("Example 2:\n");
     struct ListNode* head2 = NULL;
 
@@ -87,7 +80,6 @@ int main() {
     
     printf("\n");
 
-    // Example 3: head = [7,7,7,7], val = 7
     printf("Example 3:\n");
     struct ListNode* head3 = createNode(7);
     head3->next = createNode(7);
