@@ -1,0 +1,115 @@
+#include <stdio.h>
+#include <stdlib.h>
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+typedef struct Queue {
+    Node* front;
+    Node* rear;
+} Queue;
+Queue* createQueue() {
+    Queue* q = (Queue*)malloc(sizeof(Queue));
+    q->front = q->rear = NULL;
+    return q;
+}
+int isEmpty(Queue* q) {
+    return (q->front == NULL);
+}
+void enqueue(Queue* q, int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        printf("Queue Overflow\n");
+        return;
+    }
+    newNode->data = data;
+    newNode->next = NULL;
+    if (q->rear == NULL) {
+        q->front = q->rear = newNode;
+        return;
+    }
+    q->rear->next = newNode;
+    q->rear = newNode;
+}
+int dequeue(Queue* q) {
+    if (isEmpty(q)) {
+        return -1; // Queue is empty
+    }
+    Node* temp = q->front;
+    int removedData = temp->data;
+    q->front = q->front->next;
+
+    if (q->front == NULL) {
+        q->rear = NULL;
+    }
+
+    free(temp);
+    return removedData;
+}
+typedef struct {
+    Queue* queue1;
+    Queue* queue2;
+} MyStack;
+MyStack* myStackCreate() {
+    MyStack* stack = (MyStack*)malloc(sizeof(MyStack));
+    stack->queue1 = createQueue();
+    stack->queue2 = createQueue();
+    return stack;
+}
+void myStackPush(MyStack* obj, int x) {
+    enqueue(obj->queue1, x);
+}
+int myStackPop(MyStack* obj) {
+    if (isEmpty(obj->queue1)) {
+        return -1; // Stack is empty
+    }
+    while (obj->queue1->front->next != NULL) {
+        enqueue(obj->queue2, dequeue(obj->queue1));
+    }
+    int popped = dequeue(obj->queue1);
+    Queue* temp = obj->queue1;
+    obj->queue1 = obj->queue2;
+    obj->queue2 = temp;
+    return popped;
+}
+int myStackTop(MyStack* obj) {
+    if (isEmpty(obj->queue1)) {
+        return -1; // Stack is empty
+    }
+    while (obj->queue1->front->next != NULL) {
+        enqueue(obj->queue2, dequeue(obj->queue1));
+    }
+    int topElement = obj->queue1->front->data;
+    enqueue(obj->queue2, dequeue(obj->queue1));
+    Queue* temp = obj->queue1;
+    obj->queue1 = obj->queue2;
+    obj->queue2 = temp;
+    return topElement;
+}
+int myStackEmpty(MyStack* obj) {
+    return isEmpty(obj->queue1);
+}
+void myStackFree(MyStack* obj) {
+    while (!isEmpty(obj->queue1)) {
+        dequeue(obj->queue1);
+    }
+    while (!isEmpty(obj->queue2)) {
+        dequeue(obj->queue2);
+    }
+    free(obj->queue1);
+    free(obj->queue2);
+    free(obj);
+}
+int main() {
+    MyStack* myStack = myStackCreate();
+
+    myStackPush(myStack, 1);
+    myStackPush(myStack, 2);
+    
+    printf("Top: %d\n", myStackTop());  // Should return 2
+    printf("Pop: %d\n", myStackPop());  // Should return 2
+    printf("Empty: %d\n", myStackEmpty()); // Should return 0 (false)
+    
+    myStackFree(myStack); // Free allocated memory
+    return 0;
+}
