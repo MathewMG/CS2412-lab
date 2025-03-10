@@ -33,7 +33,7 @@ void enqueue(Queue* q, int data) {
 }
 int dequeue(Queue* q) {
     if (isEmpty(q)) {
-        return -1; // Queue is empty
+        return -1; 
     }
     Node* temp = q->front;
     int removedData = temp->data;
@@ -61,7 +61,7 @@ void myStackPush(MyStack* obj, int x) {
 }
 int myStackPop(MyStack* obj) {
     if (isEmpty(obj->queue1)) {
-        return -1; // Stack is empty
+        return -1; 
     }
     while (obj->queue1->front->next != NULL) {
         enqueue(obj->queue2, dequeue(obj->queue1));
@@ -74,7 +74,7 @@ int myStackPop(MyStack* obj) {
 }
 int myStackTop(MyStack* obj) {
     if (isEmpty(obj->queue1)) {
-        return -1; // Stack is empty
+        return -1; 
     }
     while (obj->queue1->front->next != NULL) {
         enqueue(obj->queue2, dequeue(obj->queue1));
@@ -106,10 +106,10 @@ int main() {
     myStackPush(myStack, 1);
     myStackPush(myStack, 2);
     
-    printf("Top: %d\n", myStackTop());  // Should return 2
-    printf("Pop: %d\n", myStackPop());  // Should return 2
-    printf("Empty: %d\n", myStackEmpty()); // Should return 0 (false)
+    printf("Top: %d\n", myStackTop());  
+    printf("Pop: %d\n", myStackPop());  
+    printf("Empty: %d\n", myStackEmpty()); 
     
-    myStackFree(myStack); // Free allocated memory
+    myStackFree(myStack); 
     return 0;
 }
