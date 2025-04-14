@@ -12,7 +12,7 @@ void preorder(struct TreeNode* root, int* result, int* returnSize) {
     preorder(root->right, result, returnSize);
 }
 int* preorderTraversal(struct TreeNode* root, int* returnSize) {
-    int* result = (int*)malloc(100 * sizeof(int));  // max 100 nodes
+    int* result = (int*)malloc(100 * sizeof(int));  
     *returnSize = 0;
     preorder(root, result, returnSize);
     return result;
