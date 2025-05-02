@@ -1,0 +1,48 @@
+#include <stdbool.h>
+#include <stdlib.h>
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+bool isMirror(struct TreeNode* t1, struct TreeNode* t2) {
+    if (!t1 && !t2) return true;
+    if (!t1 || !t2) return false;
+    return (t1->val == t2->val) &&
+           isMirror(t1->left, t2->right) &&
+           isMirror(t1->right, t2->left);
+}
+bool isSymmetric(struct TreeNode* root) {
+    if (!root) return true;
+    return isMirror(root->left, root->right);
+}
+
+
+#include <stdbool.h>
+#include <stdlib.h>
+struct TreeNode {
+    int val;
+    struct TreeNode *left;
+    struct TreeNode *right;
+};
+#define MAX_QUEUE 2000
+struct TreeNode* queue1[MAX_QUEUE];
+struct TreeNode* queue2[MAX_QUEUE];
+int front = 0, rear = 0;
+bool isSymmetric(struct TreeNode* root) {
+    if (!root) return true;
+    front = rear = 0;
+    queue1[rear] = root->left;
+    queue2[rear++] = root->right;
+    while (front < rear) {
+        struct TreeNode* t1 = queue1[front];
+        struct TreeNode* t2 = queue2[front++];
+        if (!t1 && !t2) continue;
+        if (!t1 || !t2 || t1->val != t2->val) return false;
+        queue1[rear] = t1->left;
+        queue2[rear++] = t2->right;
+        queue1[rear] = t1->right;
+        queue2[rear++] = t2->left;
+    }
+    return true;
+}
